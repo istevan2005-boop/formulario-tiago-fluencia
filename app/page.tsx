@@ -319,7 +319,7 @@ export default function Home() {
             <h2>Prazer, eu sou o Tiago.</h2>
             <p>Morei nos Estados Unidos dos 7 aos 18 anos. Cresci ouvindo, pensando e vivendo em inglês, o inglês real do dia a dia, não aquele inglês engessado dos livros.</p>
             <p>Foi por isso que desenvolvi um método pautado para você falar como um americano, de forma fluente. Sem tradução, sem decoreba, sem gramática cansativa.</p>
-            <p>Hoje mais de 155 mil pessoas acompanham meu conteúdo. Quero te levar para dentro do meu grupo gratuito e começar essa jornada com você.</p>
+            <p>Quero te levar para dentro do meu grupo gratuito e começar essa jornada com você.</p>
             <a href={groupDestination}>QUERO APRENDER COM O TIAGO <b>→</b></a>
           </div>
         </section>
