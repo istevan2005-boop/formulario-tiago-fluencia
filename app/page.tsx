@@ -90,9 +90,15 @@ const GROUP_FALLBACK_URL = "https://chat.whatsapp.com/CNnC62u0aRHJJmwNMsKdXI";
 type StudentVideo = { src: string; name: string; result: string; poster?: string };
 type StudentMessage = { src: string; alt: string };
 
-// Os depoimentos reais serão adicionados aqui assim que os arquivos forem enviados.
+// Os vídeos de depoimento serão adicionados aqui assim que os arquivos forem enviados.
 const STUDENT_VIDEOS: StudentVideo[] = [];
-const STUDENT_MESSAGES: StudentMessage[] = [];
+const STUDENT_MESSAGES: StudentMessage[] = [
+  { src: "/depoimentos/depoimento-2.jpeg", alt: "Aluna conta que teve o visto de Au Pair aprovado com entrevista 100% em inglês e vai morar na Califórnia" },
+  { src: "/depoimentos/depoimento-5.jpeg", alt: "Aluno relata ter chegado em Miami se sentindo fluente graças ao método" },
+  { src: "/depoimentos/depoimento-3.jpeg", alt: "Aluna diz que nunca imaginou que o inglês entraria tão fácil na cabeça dela com o método" },
+  { src: "/depoimentos/depoimento-1.jpeg", alt: "Aluno pede para reunir todos os materiais porque está ficando fluente com o método" },
+  { src: "/depoimentos/depoimento-4.jpeg", alt: "Comentário no Instagram dizendo que aprendeu mais em um vídeo do que em meses de curso na Wizard" },
+];
 
 export default function Home() {
   const [started, setStarted] = useState(false);
