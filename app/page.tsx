@@ -312,12 +312,14 @@ export default function Home() {
         )}
 
         <section className="group-about">
-          <div className="group-about-number"><strong>155K+</strong><span>pessoas acompanhando meu conteúdo</span></div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="group-about-photo" src="/tiago-foto.jpg" alt="Foto do professor Tiago" />
           <div className="group-about-copy">
             <p>QUEM VAI TE ENSINAR</p>
             <h2>Prazer, eu sou o Tiago.</h2>
-            <p>Eu ensino inglês de um jeito simples, direto e conectado à vida real — inclusive enquanto viajo pelo mundo. Meu objetivo é mostrar que você não precisa decorar regras infinitas para começar a se comunicar com mais confiança.</p>
-            <p>Mais de 155 mil pessoas já acompanham meus conteúdos. Agora, quero estar ainda mais perto de você no meu grupo gratuito.</p>
+            <p>Morei nos Estados Unidos dos 7 aos 18 anos. Cresci ouvindo, pensando e vivendo em inglês, o inglês real do dia a dia, não aquele inglês engessado dos livros.</p>
+            <p>Foi por isso que desenvolvi um método pautado para você falar como um americano, de forma fluente. Sem tradução, sem decoreba, sem gramática cansativa.</p>
+            <p>Hoje mais de 155 mil pessoas acompanham meu conteúdo. Quero te levar para dentro do meu grupo gratuito e começar essa jornada com você.</p>
             <a href={groupDestination}>QUERO APRENDER COM O TIAGO <b>→</b></a>
           </div>
         </section>

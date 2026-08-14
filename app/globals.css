@@ -264,10 +264,7 @@ form { padding: 34px 40px 40px; }
 .group-message-grid img { width: 100%; border: 1px solid #e0e3e8; border-radius: 14px; display: block; box-shadow: 0 12px 30px rgba(16,28,47,.08); }
 
 .group-about { padding: clamp(70px, 9vw, 120px) clamp(20px, 7vw, 100px); display: grid; grid-template-columns: minmax(260px, .7fr) minmax(0, 1.3fr); align-items: center; gap: clamp(40px, 8vw, 110px); background: #e8e8e1; }
-.group-about-number { min-height: 360px; padding: 35px; border-radius: 16px; display: flex; flex-direction: column; justify-content: flex-end; background: var(--navy); color: white; }
-.group-about-number::before { content: "HELLO!"; margin-bottom: auto; color: var(--lime); font-family: var(--font-space), sans-serif; font-size: 16px; }
-.group-about-number strong { color: var(--lime); font-family: var(--font-space), sans-serif; font-size: clamp(65px, 10vw, 112px); line-height: .8; letter-spacing: -.08em; }
-.group-about-number span { max-width: 260px; margin-top: 19px; color: #b7c1ce; font-size: 13px; line-height: 1.4; }
+.group-about-photo { width: 100%; min-height: 360px; max-height: 460px; border-radius: 16px; object-fit: cover; object-position: top center; background: var(--navy); }
 .group-about-copy { max-width: 780px; }
 .group-about-copy > p:not(:first-child) { color: #536071; font-size: 16px; line-height: 1.7; }
 .group-about-copy > a { min-height: 49px; margin-top: 10px; padding: 0 18px; border: 1px solid #abb1b4; border-radius: 7px; display: inline-flex; align-items: center; gap: 28px; color: var(--navy); font-size: 10px; font-weight: 900; text-decoration: none; }
@@ -329,7 +326,7 @@ form { padding: 34px 40px 40px; }
   .group-video-grid article > div { padding: 11px; }
   .group-message-grid { grid-template-columns: 1fr 1fr; gap: 9px; }
   .group-about { padding: 76px 17px; grid-template-columns: 1fr; gap: 42px; }
-  .group-about-number { min-height: 300px; padding: 27px; }
+  .group-about-photo { min-height: 260px; max-height: 340px; }
   .group-about-copy > p:not(:first-child) { font-size: 14px; }
   .group-about-copy > a { width: 100%; justify-content: space-between; }
   .group-final { padding: 80px 17px 115px; }
