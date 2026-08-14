@@ -246,7 +246,7 @@ export default function Home() {
           <div className="group-hero-copy">
             <div className="group-complete"><span>✓</span> RESPOSTAS RECEBIDAS</div>
             <p className="group-kicker">{answers.name.split(" ")[0]}, TENHO UM CONVITE PARA VOCÊ</p>
-            <h1>Seu próximo passo para <em>destravar o inglês</em> começa aqui.</h1>
+            <h1>Converse em inglês fluente <em>como um americano</em> em 90 dias.</h1>
             <p className="group-lead">Entre no meu grupo gratuito no WhatsApp. Eu vou compartilhar dicas práticas e enviar por lá o acesso ao meu <strong>Aulão Gratuito de Inglês, dia 20/08.</strong></p>
             <a className="group-main-cta" href={groupDestination}>
               <span>
