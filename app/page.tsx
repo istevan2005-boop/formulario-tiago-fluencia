@@ -247,7 +247,7 @@ export default function Home() {
             <div className="group-complete"><span>✓</span> RESPOSTAS RECEBIDAS</div>
             <p className="group-kicker">{answers.name.split(" ")[0]}, TENHO UM CONVITE PARA VOCÊ</p>
             <h1>Converse em inglês fluente <em>como um americano</em> em 90 dias.</h1>
-            <p className="group-lead">Entre no meu grupo gratuito no WhatsApp. Eu vou compartilhar dicas práticas e enviar por lá o acesso ao meu <strong>Aulão Gratuito de Inglês, dia 31/08.</strong></p>
+            <p className="group-lead">Entre no meu grupo gratuito no WhatsApp. Eu vou compartilhar dicas práticas e enviar por lá o acesso ao meu <strong>Aulão Gratuito de Inglês, dia 07/09.</strong></p>
             <a className="group-main-cta" href={groupDestination}>
               <span>
                 <small>CLIQUE PARA ENTRAR AGORA</small>
@@ -258,8 +258,8 @@ export default function Home() {
             <div className="group-trust"><span>✓ 100% gratuito</span><span>✓ Acesso pelo WhatsApp</span><span>✓ Dicas práticas</span></div>
           </div>
 
-          <aside className="group-event-card" aria-label="Aulão gratuito de inglês no dia 31 de agosto">
-            <div className="group-event-date"><small>AGOSTO</small><strong>31</strong><span>SEGUNDA-FEIRA</span></div>
+          <aside className="group-event-card" aria-label="Aulão gratuito de inglês no dia 7 de setembro">
+            <div className="group-event-date"><small>SETEMBRO</small><strong>07</strong><span>SEGUNDA-FEIRA</span></div>
             <div className="group-event-info">
               <p>AULA ESPECIAL</p>
               <h2>AULÃO<br /><em>GRATUITO</em><br />DE INGLÊS</h2>
@@ -275,7 +275,7 @@ export default function Home() {
           </div>
           <div className="group-value-grid">
             <article><span>01</span><h3>Dicas que você aplica</h3><p>Conteúdos diretos para entender, falar e usar o inglês no seu dia a dia.</p></article>
-            <article><span>02</span><h3>Aulão gratuito</h3><p>No dia 31/08, vou te mostrar como começar a destravar o inglês de forma prática.</p></article>
+            <article><span>02</span><h3>Aulão gratuito</h3><p>No dia 07/09, vou te mostrar como começar a destravar o inglês de forma prática.</p></article>
             <article><span>03</span><h3>Próximos passos</h3><p>Você recebe os avisos, materiais e orientações diretamente pelo WhatsApp.</p></article>
           </div>
           <a className="group-inline-cta" href={groupDestination}>ENTRAR NO GRUPO GRATUITO <b>→</b></a>
@@ -325,7 +325,7 @@ export default function Home() {
         </section>
 
         <section className="group-final">
-          <p>O AULÃO ACONTECE DIA 31/08</p>
+          <p>O AULÃO ACONTECE DIA 07/09</p>
           <h2>Não deixe o inglês continuar adiando suas oportunidades.</h2>
           <span>Entre agora no grupo para receber o acesso, os avisos e minhas dicas gratuitas.</span>
           <a className="group-main-cta" href={groupDestination}>
