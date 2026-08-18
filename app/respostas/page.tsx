@@ -39,6 +39,7 @@ export default function RespostasPage() {
   const [authenticated, setAuthenticated] = useState<boolean | null>(null);
   const [password, setPassword] = useState("");
   const [search, setSearch] = useState("");
+  const [urgencyFilter, setUrgencyFilter] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -105,11 +106,22 @@ export default function RespostasPage() {
     setAuthenticated(false);
   }
 
+  const urgencyOptions = useMemo(() => {
+    const seen = new Set<string>();
+    for (const lead of leads) {
+      if (lead.fluencyDeadline) seen.add(lead.fluencyDeadline);
+    }
+    return Array.from(seen);
+  }, [leads]);
+
   const filtered = useMemo(() => {
     const term = search.trim().toLocaleLowerCase("pt-BR");
-    if (!term) return leads;
-    return leads.filter((lead) => Object.values(lead).some((value) => String(value).toLocaleLowerCase("pt-BR").includes(term)));
-  }, [leads, search]);
+    return leads.filter((lead) => {
+      if (urgencyFilter && lead.fluencyDeadline !== urgencyFilter) return false;
+      if (!term) return true;
+      return Object.values(lead).some((value) => String(value).toLocaleLowerCase("pt-BR").includes(term));
+    });
+  }, [leads, search, urgencyFilter]);
 
   const completedCount = useMemo(() => leads.filter((lead) => lead.status === "complete").length, [leads]);
   const incompleteCount = leads.length - completedCount;
@@ -153,7 +165,19 @@ export default function RespostasPage() {
       <section className="admin-panel">
         <div className="admin-toolbar">
           <input className="admin-search" type="search" placeholder="Buscar por nome, WhatsApp ou resposta..." value={search} onChange={(event) => setSearch(event.target.value)} />
+          <select className="admin-filter" value={urgencyFilter} onChange={(event) => setUrgencyFilter(event.target.value)}>
+            <option value="">Todos os prazos</option>
+            {urgencyOptions.map((option) => (
+              <option key={option} value={option}>{option}</option>
+            ))}
+          </select>
+          {urgencyFilter && (
+            <button type="button" className="admin-button" onClick={() => setUrgencyFilter("")}>Limpar filtro</button>
+          )}
         </div>
+        {urgencyFilter && (
+          <p className="filter-summary">{filtered.length} lead{filtered.length === 1 ? "" : "s"} com prazo &ldquo;{urgencyFilter}&rdquo;</p>
+        )}
         {filtered.length ? (
           <div className="table-scroll">
             <table className="leads-table">
