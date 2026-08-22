@@ -94,6 +94,19 @@ form { padding: 34px 40px 40px; }
 .lead-status { display: inline-flex; padding: 5px 8px; border-radius: 999px; white-space: nowrap; font-size: 10px; font-weight: 850; }
 .lead-status.complete { background: #e9f9e7; color: #267333; }
 .lead-status.incomplete { background: #fff4d8; color: #8a5b00; }
+
+.contact-select { min-height: 34px; padding: 0 8px; border: 1px solid #d0d5db; border-radius: 7px; background: white; color: var(--navy); font-size: 12px; font-weight: 700; }
+.contact-select:focus { outline: 0; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(49,86,255,.1); }
+/* Já chamei */
+.contact-select.tag-0 { background: #eef2ff; border-color: #c7d2fe; color: #3730a3; }
+/* Número inválido */
+.contact-select.tag-1 { background: #fef2f2; border-color: #fecaca; color: #991b1b; }
+/* Call marcada */
+.contact-select.tag-2 { background: #ecfeff; border-color: #a5f3fc; color: #0e7490; }
+/* Tinha interesse */
+.contact-select.tag-3 { background: #f0fdf4; border-color: #bbf7d0; color: #15803d; }
+/* Sem interesse */
+.contact-select.tag-4 { background: #f4f4f5; border-color: #d4d4d8; color: #52525b; }
 .empty-state { padding: 50px 20px; color: var(--muted); text-align: center; }
 .admin-login { width: min(100%, 420px); margin: 10vh auto; padding: 32px; border: 1px solid #e0e3e7; border-radius: 14px; background: white; box-shadow: 0 16px 45px rgba(16,28,47,.08); }
 .admin-login h1 { margin: 0; font-family: var(--font-space), sans-serif; }

@@ -20,6 +20,7 @@ export async function GET(request: Request) {
     previousInvestment: leads.previousInvestment,
     fluencyDeadline: leads.fluencyDeadline,
     status: leads.status,
+    contactStatus: leads.contactStatus,
     lastStep: leads.lastStep,
     createdAt: leads.createdAt,
     updatedAt: leads.updatedAt,

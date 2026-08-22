@@ -11,6 +11,7 @@ export const leads = pgTable("leads", {
   previousInvestment: text("previous_investment").notNull(),
   fluencyDeadline: text("fluency_deadline").notNull(),
   status: text("status").notNull().default("complete"),
+  contactStatus: text("contact_status").notNull().default(""),
   lastStep: integer("last_step").notNull().default(7),
   updateToken: text("update_token").notNull().default(""),
   createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),

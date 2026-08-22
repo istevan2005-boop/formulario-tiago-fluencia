@@ -12,10 +12,19 @@ type Lead = {
   previousInvestment: string;
   fluencyDeadline: string;
   status: "complete" | "incomplete";
+  contactStatus: string;
   lastStep: number;
   createdAt: string;
   updatedAt: string;
 };
+
+const CONTACT_STATUS_OPTIONS = [
+  "Já chamei",
+  "Número inválido",
+  "Call marcada",
+  "Tinha interesse",
+  "Sem interesse",
+];
 
 function parseDate(value: string) {
   const normalized = value.includes("T") ? value : `${value.replace(" ", "T")}Z`;
@@ -40,6 +49,7 @@ export default function RespostasPage() {
   const [password, setPassword] = useState("");
   const [search, setSearch] = useState("");
   const [urgencyFilter, setUrgencyFilter] = useState("");
+  const [contactFilter, setContactFilter] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -106,6 +116,22 @@ export default function RespostasPage() {
     setAuthenticated(false);
   }
 
+  async function updateContactStatus(id: number, contactStatus: string) {
+    const previous = leads;
+    setLeads((current) => current.map((lead) => (lead.id === id ? { ...lead, contactStatus } : lead)));
+    try {
+      const response = await fetch("/api/admin/leads/status", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ id, contactStatus }),
+      });
+      if (!response.ok) throw new Error();
+    } catch {
+      setLeads(previous);
+      setError("Não foi possível salvar essa marcação. Tenta de novo.");
+    }
+  }
+
   const urgencyOptions = useMemo(() => {
     const seen = new Set<string>();
     for (const lead of leads) {
@@ -118,10 +144,11 @@ export default function RespostasPage() {
     const term = search.trim().toLocaleLowerCase("pt-BR");
     return leads.filter((lead) => {
       if (urgencyFilter && lead.fluencyDeadline !== urgencyFilter) return false;
+      if (contactFilter && !(contactFilter === "Sem marcação" ? !lead.contactStatus : lead.contactStatus === contactFilter)) return false;
       if (!term) return true;
       return Object.values(lead).some((value) => String(value).toLocaleLowerCase("pt-BR").includes(term));
     });
-  }, [leads, search, urgencyFilter]);
+  }, [leads, search, urgencyFilter, contactFilter]);
 
   const completedCount = useMemo(() => leads.filter((lead) => lead.status === "complete").length, [leads]);
   const incompleteCount = leads.length - completedCount;
@@ -171,25 +198,44 @@ export default function RespostasPage() {
               <option key={option} value={option}>{option}</option>
             ))}
           </select>
-          {urgencyFilter && (
-            <button type="button" className="admin-button" onClick={() => setUrgencyFilter("")}>Limpar filtro</button>
+          <select className="admin-filter" value={contactFilter} onChange={(event) => setContactFilter(event.target.value)}>
+            <option value="">Todos os contatos</option>
+            <option value="Sem marcação">Sem marcação</option>
+            {CONTACT_STATUS_OPTIONS.map((option) => (
+              <option key={option} value={option}>{option}</option>
+            ))}
+          </select>
+          {(urgencyFilter || contactFilter) && (
+            <button type="button" className="admin-button" onClick={() => { setUrgencyFilter(""); setContactFilter(""); }}>Limpar filtros</button>
           )}
         </div>
-        {urgencyFilter && (
-          <p className="filter-summary">{filtered.length} lead{filtered.length === 1 ? "" : "s"} com prazo &ldquo;{urgencyFilter}&rdquo;</p>
+        {(urgencyFilter || contactFilter) && (
+          <p className="filter-summary">{filtered.length} lead{filtered.length === 1 ? "" : "s"} encontrado{filtered.length === 1 ? "" : "s"}</p>
         )}
         {filtered.length ? (
           <div className="table-scroll">
             <table className="leads-table">
               <thead>
                 <tr>
-                  <th>Status</th><th>Data</th><th>Nome</th><th>WhatsApp</th><th>Cenário</th><th>Ocupação</th><th>Já tentou aprender</th><th>Investiu em curso</th><th>Prazo</th>
+                  <th>Status</th><th>Contato</th><th>Data</th><th>Nome</th><th>WhatsApp</th><th>Cenário</th><th>Ocupação</th><th>Já tentou aprender</th><th>Investiu em curso</th><th>Prazo</th>
                 </tr>
               </thead>
               <tbody>
                 {filtered.map((lead) => (
                   <tr key={lead.id}>
                     <td><span className={`lead-status ${lead.status}`}>{lead.status === "complete" ? "Concluído" : `Incompleto · ${lead.lastStep}/7`}</span></td>
+                    <td>
+                      <select
+                        className={`contact-select ${lead.contactStatus ? `tag-${CONTACT_STATUS_OPTIONS.indexOf(lead.contactStatus)}` : ""}`}
+                        value={lead.contactStatus}
+                        onChange={(event) => void updateContactStatus(lead.id, event.target.value)}
+                      >
+                        <option value="">Marcar...</option>
+                        {CONTACT_STATUS_OPTIONS.map((option) => (
+                          <option key={option} value={option}>{option}</option>
+                        ))}
+                      </select>
+                    </td>
                     <td>{dateLabel(lead.createdAt)}</td>
                     <td><strong>{lead.name}</strong></td>
                     <td><a href={whatsappLink(lead.whatsapp)} target="_blank" rel="noreferrer">{lead.whatsapp}</a></td>
