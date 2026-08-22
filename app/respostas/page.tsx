@@ -43,6 +43,45 @@ function whatsappLink(value: string) {
   return `https://wa.me/${withCountry}`;
 }
 
+function csvCell(value: unknown) {
+  let text = String(value ?? "");
+  if (/^[=+\-@]/.test(text)) text = `'${text}`;
+  return `"${text.replace(/"/g, '""')}"`;
+}
+
+function downloadLeadsCsv(rows: Lead[]) {
+  const header = ["ID", "Status", "Contato", "Última etapa", "Data", "Última atualização", "Nome", "WhatsApp", "Cenário", "Ocupação", "Histórico com inglês", "Investimento em curso", "Prazo para fluência"];
+  const lines = rows.map((lead) =>
+    [
+      lead.id,
+      lead.status === "complete" ? "Concluído" : "Incompleto",
+      lead.contactStatus || "",
+      `${lead.lastStep}/7`,
+      lead.createdAt,
+      lead.updatedAt || lead.createdAt,
+      lead.name,
+      lead.whatsapp,
+      lead.situation,
+      lead.profession,
+      lead.englishHistory,
+      lead.previousInvestment,
+      lead.fluencyDeadline,
+    ]
+      .map(csvCell)
+      .join(",")
+  );
+  const csv = `﻿${header.map(csvCell).join(",")}\n${lines.join("\n")}`;
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `respostas-tiago-${new Date().toISOString().slice(0, 10)}.csv`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
 export default function RespostasPage() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [authenticated, setAuthenticated] = useState<boolean | null>(null);
@@ -178,7 +217,9 @@ export default function RespostasPage() {
           <p>Leads e segmentação do público do Tiago.</p>
         </div>
         <div className="admin-actions">
-          <a className="admin-button primary" href="/api/admin/leads/export">Baixar CSV</a>
+          <button type="button" className="admin-button primary" onClick={() => downloadLeadsCsv(filtered)}>
+            Baixar CSV {(urgencyFilter || contactFilter || search) ? `(${filtered.length} filtrados)` : ""}
+          </button>
           <button className="admin-button" type="button" onClick={logout}>Sair</button>
         </div>
       </header>
