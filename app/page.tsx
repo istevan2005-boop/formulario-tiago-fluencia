@@ -71,7 +71,7 @@ const STEPS: Step[] = [
     title: "Quanto você está disposto(a) a investir para destravar sua fluência?",
     helper: "Isso me ajuda a indicar o formato certo pra você. Quanto maior o investimento, mais rápido e individualizado fica o acompanhamento comigo.",
     type: "choice",
-    options: ["Até R$100", "Entre R$100 e R$500", "Entre R$500 e R$2.000", "Acima de R$2.000 (quero acompanhamento individual)"],
+    options: ["Até R$600", "Entre R$600 e R$1.200", "Entre R$1.200 e R$2.400", "Acima de R$2.400 (quero o acompanhamento mais completo com o Tiago)"],
   },
   {
     key: "fluencyDeadline",

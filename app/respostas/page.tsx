@@ -28,10 +28,10 @@ const CONTACT_STATUS_OPTIONS = [
 ];
 
 const BUDGET_OPTIONS = [
-  "Até R$100",
-  "Entre R$100 e R$500",
-  "Entre R$500 e R$2.000",
-  "Acima de R$2.000 (quero acompanhamento individual)",
+  "Até R$600",
+  "Entre R$600 e R$1.200",
+  "Entre R$1.200 e R$2.400",
+  "Acima de R$2.400 (quero o acompanhamento mais completo com o Tiago)",
 ];
 
 function parseDate(value: string) {

@@ -8,7 +8,7 @@ const allowed = {
   profession: ["Empresário(a)", "Liberal ou autônomo(a)", "CLT", "Estudante"],
   englishHistory: ["Sim, várias vezes", "Sim, mas parei no caminho", "Estou estudando atualmente", "Não, seria minha primeira vez"],
   previousInvestment: ["Sim, mais de uma vez", "Sim, uma vez", "Ainda não, mas quero", "Nunca foi prioridade"],
-  investmentBudget: ["Até R$100", "Entre R$100 e R$500", "Entre R$500 e R$2.000", "Acima de R$2.000 (quero acompanhamento individual)"],
+  investmentBudget: ["Até R$600", "Entre R$600 e R$1.200", "Entre R$1.200 e R$2.400", "Acima de R$2.400 (quero o acompanhamento mais completo com o Tiago)"],
   fluencyDeadline: ["O mais rápido possível", "Em algumas semanas", "Até 3 meses", "Até 1 ano", "Sem prazo definido"],
 };
 
