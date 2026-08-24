@@ -8,8 +8,11 @@ const allowed = {
   profession: ["Empresário(a)", "Liberal ou autônomo(a)", "CLT", "Estudante"],
   englishHistory: ["Sim, várias vezes", "Sim, mas parei no caminho", "Estou estudando atualmente", "Não, seria minha primeira vez"],
   previousInvestment: ["Sim, mais de uma vez", "Sim, uma vez", "Ainda não, mas quero", "Nunca foi prioridade"],
+  investmentBudget: ["Até R$100", "Entre R$100 e R$500", "Entre R$500 e R$2.000", "Acima de R$2.000 (quero acompanhamento individual)"],
   fluencyDeadline: ["O mais rápido possível", "Em algumas semanas", "Até 3 meses", "Até 1 ano", "Sem prazo definido"],
 };
+
+const TOTAL_STEPS = 8;
 
 function text(body: Record<string, unknown>, key: string, max = 160) {
   return typeof body[key] === "string" ? body[key].trim().slice(0, max) : "";
@@ -26,6 +29,7 @@ export async function POST(request: Request) {
     const profession = text(body, "profession");
     const englishHistory = text(body, "englishHistory");
     const previousInvestment = text(body, "previousInvestment");
+    const investmentBudget = text(body, "investmentBudget");
     const fluencyDeadline = text(body, "fluencyDeadline");
 
     const contactIsValid = name.length >= 2 && whatsapp.replace(/\D/g, "").length >= 10;
@@ -34,15 +38,16 @@ export async function POST(request: Request) {
       (!profession || allowed.profession.includes(profession)) &&
       (!englishHistory || allowed.englishHistory.includes(englishHistory)) &&
       (!previousInvestment || allowed.previousInvestment.includes(previousInvestment)) &&
+      (!investmentBudget || allowed.investmentBudget.includes(investmentBudget)) &&
       (!fluencyDeadline || allowed.fluencyDeadline.includes(fluencyDeadline));
 
     if (!contactIsValid || !answersAreValid) {
       return Response.json({ error: "Dados inválidos." }, { status: 400 });
     }
 
-    const isComplete = Boolean(situation && profession && englishHistory && previousInvestment && fluencyDeadline);
+    const isComplete = Boolean(situation && profession && englishHistory && previousInvestment && investmentBudget && fluencyDeadline);
     const requestedStep = typeof body.lastStep === "number" ? Math.trunc(body.lastStep) : 2;
-    const lastStep = isComplete ? 7 : Math.max(2, Math.min(6, requestedStep));
+    const lastStep = isComplete ? TOTAL_STEPS : Math.max(2, Math.min(TOTAL_STEPS - 1, requestedStep));
     const now = new Date().toISOString();
 
     await ensureLeadsTable();
@@ -61,6 +66,7 @@ export async function POST(request: Request) {
         profession,
         englishHistory,
         previousInvestment,
+        investmentBudget,
         fluencyDeadline,
         status: isComplete ? "complete" : "incomplete",
         lastStep,
@@ -77,6 +83,7 @@ export async function POST(request: Request) {
         profession,
         englishHistory,
         previousInvestment,
+        investmentBudget,
         fluencyDeadline,
         status: isComplete ? "complete" : "incomplete",
         lastStep,

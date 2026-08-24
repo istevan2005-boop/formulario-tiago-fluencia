@@ -17,8 +17,8 @@ export async function GET(request: Request) {
   await ensureLeadsTable();
   const db = await getDb();
   const rows = await db.select().from(leads).orderBy(desc(leads.id));
-  const header = ["ID", "Status", "Contato", "Última etapa", "Data", "Última atualização", "Nome", "WhatsApp", "Cenário", "Ocupação", "Histórico com inglês", "Investimento em curso", "Prazo para fluência"];
-  const lines = rows.map((lead) => [lead.id, lead.status === "complete" ? "Concluído" : "Incompleto", lead.contactStatus || "", `${lead.lastStep}/7`, lead.createdAt, lead.updatedAt || lead.createdAt, lead.name, lead.whatsapp, lead.situation, lead.profession, lead.englishHistory, lead.previousInvestment, lead.fluencyDeadline].map(csvCell).join(","));
+  const header = ["ID", "Status", "Contato", "Última etapa", "Data", "Última atualização", "Nome", "WhatsApp", "Cenário", "Ocupação", "Histórico com inglês", "Investimento em curso", "Orçamento disposto", "Prazo para fluência"];
+  const lines = rows.map((lead) => [lead.id, lead.status === "complete" ? "Concluído" : "Incompleto", lead.contactStatus || "", `${lead.lastStep}/8`, lead.createdAt, lead.updatedAt || lead.createdAt, lead.name, lead.whatsapp, lead.situation, lead.profession, lead.englishHistory, lead.previousInvestment, lead.investmentBudget, lead.fluencyDeadline].map(csvCell).join(","));
   const csv = `\uFEFF${header.map(csvCell).join(",")}\n${lines.join("\n")}`;
 
   return new Response(csv, {

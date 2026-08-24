@@ -37,10 +37,11 @@ export async function ensureLeadsTable() {
         profession TEXT NOT NULL,
         english_history TEXT DEFAULT 'Não informado' NOT NULL,
         previous_investment TEXT NOT NULL,
+        investment_budget TEXT DEFAULT '' NOT NULL,
         fluency_deadline TEXT NOT NULL,
         status TEXT DEFAULT 'complete' NOT NULL,
         contact_status TEXT DEFAULT '' NOT NULL,
-        last_step INTEGER DEFAULT 7 NOT NULL,
+        last_step INTEGER DEFAULT 8 NOT NULL,
         update_token TEXT DEFAULT '' NOT NULL,
         created_at TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL,
         updated_at TEXT DEFAULT '' NOT NULL
@@ -55,6 +56,7 @@ export async function ensureLeadsTable() {
     if (!names.has("english_history")) await sql`ALTER TABLE leads ADD COLUMN english_history TEXT DEFAULT 'Não informado' NOT NULL`;
     if (!names.has("status")) await sql`ALTER TABLE leads ADD COLUMN status TEXT DEFAULT 'complete' NOT NULL`;
     if (!names.has("contact_status")) await sql`ALTER TABLE leads ADD COLUMN contact_status TEXT DEFAULT '' NOT NULL`;
+    if (!names.has("investment_budget")) await sql`ALTER TABLE leads ADD COLUMN investment_budget TEXT DEFAULT '' NOT NULL`;
     if (!names.has("last_step")) await sql`ALTER TABLE leads ADD COLUMN last_step INTEGER DEFAULT 7 NOT NULL`;
     if (!names.has("update_token")) await sql`ALTER TABLE leads ADD COLUMN update_token TEXT DEFAULT '' NOT NULL`;
     if (!names.has("updated_at")) await sql`ALTER TABLE leads ADD COLUMN updated_at TEXT DEFAULT '' NOT NULL`;

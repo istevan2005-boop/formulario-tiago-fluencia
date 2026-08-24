@@ -9,11 +9,12 @@ type Answers = {
   profession: string;
   englishHistory: string;
   previousInvestment: string;
+  investmentBudget: string;
   fluencyDeadline: string;
   website: string;
 };
 
-type ChoiceKey = keyof Pick<Answers, "situation" | "profession" | "englishHistory" | "previousInvestment" | "fluencyDeadline">;
+type ChoiceKey = keyof Pick<Answers, "situation" | "profession" | "englishHistory" | "previousInvestment" | "investmentBudget" | "fluencyDeadline">;
 
 type LeadSession = {
   leadId: number;
@@ -65,6 +66,14 @@ const STEPS: Step[] = [
     options: ["Sim, mais de uma vez", "Sim, uma vez", "Ainda não, mas quero", "Nunca foi prioridade"],
   },
   {
+    key: "investmentBudget",
+    eyebrow: "SEU INVESTIMENTO",
+    title: "Quanto você está disposto(a) a investir para destravar sua fluência?",
+    helper: "Isso me ajuda a indicar o formato certo pra você. Quanto maior o investimento, mais rápido e individualizado fica o acompanhamento comigo.",
+    type: "choice",
+    options: ["Até R$100", "Entre R$100 e R$500", "Entre R$500 e R$2.000", "Acima de R$2.000 (quero acompanhamento individual)"],
+  },
+  {
     key: "fluencyDeadline",
     eyebrow: "SEU OBJETIVO",
     title: "Em quanto tempo você quer conquistar sua fluência?",
@@ -81,6 +90,7 @@ const EMPTY_ANSWERS: Answers = {
   profession: "",
   englishHistory: "",
   previousInvestment: "",
+  investmentBudget: "",
   fluencyDeadline: "",
   website: "",
 };
@@ -225,7 +235,7 @@ export default function Home() {
         <section className="welcome-content">
           <p className="flow-eyebrow">QUERO TE CONHECER MELHOR</p>
           <h1>Quero entender o seu momento <em>com o inglês.</em></h1>
-          <p>Separei 7 perguntas rápidas para entender onde você está e como eu posso te ajudar a avançar.</p>
+          <p>Separei 8 perguntas rápidas para entender onde você está e como eu posso te ajudar a avançar.</p>
           <button className="flow-primary" type="button" onClick={() => setStarted(true)}>Responder agora <span>→</span></button>
           <small>Leva menos de 2 minutos</small>
         </section>

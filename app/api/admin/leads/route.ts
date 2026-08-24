@@ -18,6 +18,7 @@ export async function GET(request: Request) {
     profession: leads.profession,
     englishHistory: leads.englishHistory,
     previousInvestment: leads.previousInvestment,
+    investmentBudget: leads.investmentBudget,
     fluencyDeadline: leads.fluencyDeadline,
     status: leads.status,
     contactStatus: leads.contactStatus,

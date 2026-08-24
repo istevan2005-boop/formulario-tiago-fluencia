@@ -92,6 +92,9 @@ form { padding: 34px 40px 40px; }
 .leads-table td { max-width: 210px; padding: 12px; border-top: 1px solid #eceef1; vertical-align: top; line-height: 1.4; }
 .leads-table a { color: var(--blue); font-weight: 700; text-decoration: none; }
 .lead-status { display: inline-flex; padding: 5px 8px; border-radius: 999px; white-space: nowrap; font-size: 10px; font-weight: 850; }
+
+.budget-tag { display: inline-flex; padding: 5px 8px; border-radius: 999px; white-space: normal; font-size: 10px; font-weight: 850; background: #f4f4f5; color: #52525b; }
+.budget-tag.budget-high { background: var(--lime); color: #1a3d0a; }
 .lead-status.complete { background: #e9f9e7; color: #267333; }
 .lead-status.incomplete { background: #fff4d8; color: #8a5b00; }
 

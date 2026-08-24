@@ -10,6 +10,7 @@ type Lead = {
   profession: string;
   englishHistory: string;
   previousInvestment: string;
+  investmentBudget: string;
   fluencyDeadline: string;
   status: "complete" | "incomplete";
   contactStatus: string;
@@ -24,6 +25,13 @@ const CONTACT_STATUS_OPTIONS = [
   "Call marcada",
   "Tinha interesse",
   "Sem interesse",
+];
+
+const BUDGET_OPTIONS = [
+  "Até R$100",
+  "Entre R$100 e R$500",
+  "Entre R$500 e R$2.000",
+  "Acima de R$2.000 (quero acompanhamento individual)",
 ];
 
 function parseDate(value: string) {
@@ -50,13 +58,13 @@ function csvCell(value: unknown) {
 }
 
 function downloadLeadsCsv(rows: Lead[]) {
-  const header = ["ID", "Status", "Contato", "Última etapa", "Data", "Última atualização", "Nome", "WhatsApp", "Cenário", "Ocupação", "Histórico com inglês", "Investimento em curso", "Prazo para fluência"];
+  const header = ["ID", "Status", "Contato", "Última etapa", "Data", "Última atualização", "Nome", "WhatsApp", "Cenário", "Ocupação", "Histórico com inglês", "Investimento em curso", "Orçamento disposto", "Prazo para fluência"];
   const lines = rows.map((lead) =>
     [
       lead.id,
       lead.status === "complete" ? "Concluído" : "Incompleto",
       lead.contactStatus || "",
-      `${lead.lastStep}/7`,
+      `${lead.lastStep}/8`,
       lead.createdAt,
       lead.updatedAt || lead.createdAt,
       lead.name,
@@ -65,6 +73,7 @@ function downloadLeadsCsv(rows: Lead[]) {
       lead.profession,
       lead.englishHistory,
       lead.previousInvestment,
+      lead.investmentBudget,
       lead.fluencyDeadline,
     ]
       .map(csvCell)
@@ -89,6 +98,7 @@ export default function RespostasPage() {
   const [search, setSearch] = useState("");
   const [urgencyFilter, setUrgencyFilter] = useState("");
   const [contactFilter, setContactFilter] = useState("");
+  const [budgetFilter, setBudgetFilter] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -183,11 +193,12 @@ export default function RespostasPage() {
     const term = search.trim().toLocaleLowerCase("pt-BR");
     return leads.filter((lead) => {
       if (urgencyFilter && lead.fluencyDeadline !== urgencyFilter) return false;
+      if (budgetFilter && lead.investmentBudget !== budgetFilter) return false;
       if (contactFilter && !(contactFilter === "Sem marcação" ? !lead.contactStatus : lead.contactStatus === contactFilter)) return false;
       if (!term) return true;
       return Object.values(lead).some((value) => String(value).toLocaleLowerCase("pt-BR").includes(term));
     });
-  }, [leads, search, urgencyFilter, contactFilter]);
+  }, [leads, search, urgencyFilter, contactFilter, budgetFilter]);
 
   const completedCount = useMemo(() => leads.filter((lead) => lead.status === "complete").length, [leads]);
   const incompleteCount = leads.length - completedCount;
@@ -218,7 +229,7 @@ export default function RespostasPage() {
         </div>
         <div className="admin-actions">
           <button type="button" className="admin-button primary" onClick={() => downloadLeadsCsv(filtered)}>
-            Baixar CSV {(urgencyFilter || contactFilter || search) ? `(${filtered.length} filtrados)` : ""}
+            Baixar CSV {(urgencyFilter || contactFilter || budgetFilter || search) ? `(${filtered.length} filtrados)` : ""}
           </button>
           <button className="admin-button" type="button" onClick={logout}>Sair</button>
         </div>
@@ -246,11 +257,17 @@ export default function RespostasPage() {
               <option key={option} value={option}>{option}</option>
             ))}
           </select>
-          {(urgencyFilter || contactFilter) && (
-            <button type="button" className="admin-button" onClick={() => { setUrgencyFilter(""); setContactFilter(""); }}>Limpar filtros</button>
+          <select className="admin-filter" value={budgetFilter} onChange={(event) => setBudgetFilter(event.target.value)}>
+            <option value="">Todos os orçamentos</option>
+            {BUDGET_OPTIONS.map((option) => (
+              <option key={option} value={option}>{option}</option>
+            ))}
+          </select>
+          {(urgencyFilter || contactFilter || budgetFilter) && (
+            <button type="button" className="admin-button" onClick={() => { setUrgencyFilter(""); setContactFilter(""); setBudgetFilter(""); }}>Limpar filtros</button>
           )}
         </div>
-        {(urgencyFilter || contactFilter) && (
+        {(urgencyFilter || contactFilter || budgetFilter) && (
           <p className="filter-summary">{filtered.length} lead{filtered.length === 1 ? "" : "s"} encontrado{filtered.length === 1 ? "" : "s"}</p>
         )}
         {filtered.length ? (
@@ -258,13 +275,13 @@ export default function RespostasPage() {
             <table className="leads-table">
               <thead>
                 <tr>
-                  <th>Status</th><th>Contato</th><th>Data</th><th>Nome</th><th>WhatsApp</th><th>Cenário</th><th>Ocupação</th><th>Já tentou aprender</th><th>Investiu em curso</th><th>Prazo</th>
+                  <th>Status</th><th>Contato</th><th>Orçamento</th><th>Data</th><th>Nome</th><th>WhatsApp</th><th>Cenário</th><th>Ocupação</th><th>Já tentou aprender</th><th>Investiu em curso</th><th>Prazo</th>
                 </tr>
               </thead>
               <tbody>
                 {filtered.map((lead) => (
                   <tr key={lead.id}>
-                    <td><span className={`lead-status ${lead.status}`}>{lead.status === "complete" ? "Concluído" : `Incompleto · ${lead.lastStep}/7`}</span></td>
+                    <td><span className={`lead-status ${lead.status}`}>{lead.status === "complete" ? "Concluído" : `Incompleto · ${lead.lastStep}/8`}</span></td>
                     <td>
                       <select
                         className={`contact-select ${lead.contactStatus ? `tag-${CONTACT_STATUS_OPTIONS.indexOf(lead.contactStatus)}` : ""}`}
@@ -276,6 +293,11 @@ export default function RespostasPage() {
                           <option key={option} value={option}>{option}</option>
                         ))}
                       </select>
+                    </td>
+                    <td>
+                      {lead.investmentBudget ? (
+                        <span className={`budget-tag ${lead.investmentBudget === BUDGET_OPTIONS[3] ? "budget-high" : ""}`}>{lead.investmentBudget}</span>
+                      ) : "—"}
                     </td>
                     <td>{dateLabel(lead.createdAt)}</td>
                     <td><strong>{lead.name}</strong></td>
