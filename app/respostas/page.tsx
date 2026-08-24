@@ -99,6 +99,7 @@ export default function RespostasPage() {
   const [urgencyFilter, setUrgencyFilter] = useState("");
   const [contactFilter, setContactFilter] = useState("");
   const [budgetFilter, setBudgetFilter] = useState("");
+  const [selected, setSelected] = useState<Set<number>>(new Set());
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -179,6 +180,60 @@ export default function RespostasPage() {
       setLeads(previous);
       setError("Não foi possível salvar essa marcação. Tenta de novo.");
     }
+  }
+
+  async function deleteLead(id: number, name: string) {
+    if (!window.confirm(`Excluir a resposta de "${name}"? Essa ação não pode ser desfeita.`)) return;
+    const previous = leads;
+    setLeads((current) => current.filter((lead) => lead.id !== id));
+    setSelected((current) => {
+      const next = new Set(current);
+      next.delete(id);
+      return next;
+    });
+    try {
+      const response = await fetch("/api/admin/leads/delete", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      if (!response.ok) throw new Error();
+    } catch {
+      setLeads(previous);
+      setError("Não foi possível excluir essa resposta. Tenta de novo.");
+    }
+  }
+
+  async function deleteSelected() {
+    const ids = Array.from(selected);
+    if (!ids.length) return;
+    if (!window.confirm(`Excluir ${ids.length} resposta${ids.length === 1 ? "" : "s"} selecionada${ids.length === 1 ? "" : "s"}? Essa ação não pode ser desfeita.`)) return;
+    const previous = leads;
+    setLeads((current) => current.filter((lead) => !selected.has(lead.id)));
+    setSelected(new Set());
+    try {
+      const results = await Promise.all(
+        ids.map((id) =>
+          fetch("/api/admin/leads/delete", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ id }),
+          })
+        )
+      );
+      if (results.some((response) => !response.ok)) throw new Error();
+    } catch {
+      setLeads(previous);
+      setError("Não foi possível excluir todas as respostas selecionadas. Confere e tenta de novo.");
+    }
+  }
+
+  function toggleSelected(id: number) {
+    setSelected((current) => {
+      const next = new Set(current);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
   }
 
   const urgencyOptions = useMemo(() => {
@@ -266,6 +321,11 @@ export default function RespostasPage() {
           {(urgencyFilter || contactFilter || budgetFilter) && (
             <button type="button" className="admin-button" onClick={() => { setUrgencyFilter(""); setContactFilter(""); setBudgetFilter(""); }}>Limpar filtros</button>
           )}
+          {selected.size > 0 && (
+            <button type="button" className="admin-button danger" onClick={() => void deleteSelected()}>
+              Excluir {selected.size} selecionado{selected.size === 1 ? "" : "s"}
+            </button>
+          )}
         </div>
         {(urgencyFilter || contactFilter || budgetFilter) && (
           <p className="filter-summary">{filtered.length} lead{filtered.length === 1 ? "" : "s"} encontrado{filtered.length === 1 ? "" : "s"}</p>
@@ -275,12 +335,20 @@ export default function RespostasPage() {
             <table className="leads-table">
               <thead>
                 <tr>
-                  <th>Status</th><th>Contato</th><th>Orçamento</th><th>Data</th><th>Nome</th><th>WhatsApp</th><th>Cenário</th><th>Ocupação</th><th>Já tentou aprender</th><th>Investiu em curso</th><th>Prazo</th>
+                  <th></th><th>Status</th><th>Contato</th><th>Orçamento</th><th>Data</th><th>Nome</th><th>WhatsApp</th><th>Cenário</th><th>Ocupação</th><th>Já tentou aprender</th><th>Investiu em curso</th><th>Prazo</th><th></th>
                 </tr>
               </thead>
               <tbody>
                 {filtered.map((lead) => (
                   <tr key={lead.id}>
+                    <td>
+                      <input
+                        type="checkbox"
+                        checked={selected.has(lead.id)}
+                        onChange={() => toggleSelected(lead.id)}
+                        aria-label={`Selecionar resposta de ${lead.name}`}
+                      />
+                    </td>
                     <td><span className={`lead-status ${lead.status}`}>{lead.status === "complete" ? "Concluído" : `Incompleto · ${lead.lastStep}/8`}</span></td>
                     <td>
                       <select
@@ -307,6 +375,11 @@ export default function RespostasPage() {
                     <td>{lead.englishHistory || "—"}</td>
                     <td>{lead.previousInvestment || "—"}</td>
                     <td>{lead.fluencyDeadline || "—"}</td>
+                    <td>
+                      <button type="button" className="delete-button" onClick={() => void deleteLead(lead.id, lead.name)} aria-label={`Excluir resposta de ${lead.name}`}>
+                        Excluir
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
