@@ -42,6 +42,14 @@ const STEPS: Step[] = [
     options: ["Já moro fora", "Vou morar fora em breve", "Viajo a trabalho", "Vou viajar em breve"],
   },
   {
+    key: "investmentBudget",
+    eyebrow: "SEU INVESTIMENTO",
+    title: "Quanto você está disposto(a) a investir para destravar sua fluência?",
+    helper: "Isso me ajuda a indicar o formato certo pra você. Quanto maior o investimento, mais rápido e individualizado fica o acompanhamento comigo.",
+    type: "choice",
+    options: ["Até R$600", "Entre R$600 e R$1.200", "Entre R$1.200 e R$2.400", "Acima de R$2.400 (quero o acompanhamento mais completo com o Tiago)"],
+  },
+  {
     key: "profession",
     eyebrow: "SUA ROTINA",
     title: "Qual é a sua ocupação hoje?",
@@ -64,14 +72,6 @@ const STEPS: Step[] = [
     helper: "Pode responder com sinceridade. Quero entender o que você já buscou.",
     type: "choice",
     options: ["Sim, mais de uma vez", "Sim, uma vez", "Ainda não, mas quero", "Nunca foi prioridade"],
-  },
-  {
-    key: "investmentBudget",
-    eyebrow: "SEU INVESTIMENTO",
-    title: "Quanto você está disposto(a) a investir para destravar sua fluência?",
-    helper: "Isso me ajuda a indicar o formato certo pra você. Quanto maior o investimento, mais rápido e individualizado fica o acompanhamento comigo.",
-    type: "choice",
-    options: ["Até R$600", "Entre R$600 e R$1.200", "Entre R$1.200 e R$2.400", "Acima de R$2.400 (quero o acompanhamento mais completo com o Tiago)"],
   },
   {
     key: "fluencyDeadline",
